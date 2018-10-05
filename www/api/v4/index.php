@@ -435,7 +435,8 @@ if (!isset($api)) {
                        time_factor*timelimit AS maxruntime,
                        p.memlimit, p.outputlimit,
                        special_run AS run, special_compare AS compare,
-                       special_compare_args AS compare_args, compile_script
+                       special_compare_args AS compare_args, compile_script,
+                        CASE WHEN (filename = "" OR filename is NULL) THEN "NULL" ELSE filename END as filename
                        FROM submission s
                        LEFT JOIN problem p USING (probid)
                        LEFT JOIN language l USING (langid)

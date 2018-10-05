@@ -834,7 +834,7 @@ function judge(array $row)
         }
 
         system(LIBJUDGEDIR . "/testcase_run.sh $cpuset_opt $tcfile[input] $tcfile[output] " .
-               "$row[maxruntime]:$hardtimelimit '$testcasedir' " .
+               "$row[maxruntime]:$hardtimelimit '$testcasedir' '$row[filename]' " .
                "'$run_runpath' '$compare_runpath' '$row[compare_args]'", $retval);
 
         // what does the exitcode mean?

@@ -12,6 +12,7 @@
 # <workdir>         Directory where to execute submission in a chroot-ed
 #                   environment. For best security leave it as empty as possible.
 #                   Certainly do not place output-files there!
+# <filename>        Name for file containing input data.
 # <run>             Absolute path to run script to use.
 # <compare>         Absolute path to compare script to use.
 # <compare-args>    Arguments to path to compare script
@@ -128,10 +129,11 @@ TESTIN="$1";    shift
 TESTOUT="$1";   shift
 TIMELIMIT="$1"; shift
 WORKDIR="$1";   shift
+FILENAME="$1";  shift
 RUN_SCRIPT="$1";
 COMPARE_SCRIPT="$2";
 COMPARE_ARGS="$3";
-logmsg $LOG_DEBUG "arguments: '$TESTIN' '$TESTOUT' '$TIMELIMIT' '$WORKDIR'"
+logmsg $LOG_DEBUG "arguments: '$TESTIN' '$TESTOUT' '$TIMELIMIT' '$WORKDIR' '$FILENAME'"
 logmsg $LOG_DEBUG "optionals: '$RUN_SCRIPT' '$COMPARE_SCRIPT' '$COMPARE_ARGS'"
 
 # optional runjury program
@@ -199,9 +201,19 @@ $GAINROOT cp -pR /dev/null ../dev/null
 # Run the solution program (within a restricted environment):
 logmsg $LOG_INFO "running program (USE_CHROOT = ${USE_CHROOT:-0})"
 
+INDATA="testdata.in"
+
+if [ "$FILENAME" != "NULL" -a "$FILENAME" != "none" ]
+then
+  DIR=`dirname "$PREFIX/$PROGRAM"`
+  cp testdata.in "$DIR/$FILENAME"
+  cp testdata.in "$FILENAME"
+  INDATA="/dev/null"
+fi
+
 # To suppress false positive of FILELIMIT misspelling of TIMELIMIT:
 # shellcheck disable=SC2153
-runcheck ./run testdata.in program.out \
+runcheck ./run "$INDATA" program.out \
 	$GAINROOT "$RUNGUARD" ${DEBUG:+-v -V "DEBUG=$DEBUG"} $CPUSET_OPT \
 	${USE_CHROOT:+-r "$PWD/.."} \
 	--nproc=$PROCLIMIT \

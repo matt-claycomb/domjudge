@@ -315,6 +315,7 @@ CREATE TABLE `problem` (
   `special_compare_args` varchar(255) DEFAULT NULL COMMENT 'Optional arguments to special_compare script',
   `problemtext` longblob COMMENT 'Problem text in HTML/PDF/ASCII',
   `problemtext_type` varchar(4) DEFAULT NULL COMMENT 'File type of problem text',
+  `filename` VARCHAR(255) DEFAULT NULL COMMENT 'File name (if any) for problem input',
   PRIMARY KEY  (`probid`),
   KEY `externalid` (`externalid`(190))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Problems the teams can submit solutions for';
