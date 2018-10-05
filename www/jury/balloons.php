@@ -76,6 +76,12 @@ require(LIBWWWDIR . '/header.php');
 
 echo "<h1>Balloon Status</h1>\n\n";
 
+if ( empty($cids) ) {
+        warning('No active contest(s)');
+        require(LIBWWWDIR . '/footer.php');
+        exit;
+}
+
 foreach ($cdatas as $cdata) {
     if (isset($cdata['freezetime']) &&
         difftime((float)$cdata['freezetime'], now()) <= 0
